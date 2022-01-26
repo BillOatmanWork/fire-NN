@@ -1,4 +1,4 @@
-# Fire
+# Fire NN
 
 ![alt tag](https://raw.githubusercontent.com/FireFather/fire/master/docs/fire.png)
 
