@@ -335,6 +335,8 @@ gcc-profile-use:
 gcc-profile-clean:
 	@rm -rf *.gcda
 	@rm -rf *.o
+	@rm -rf *.map
+	@rm -rf *txt			
 	@rm -rf bitbase/*.gcda
 	@rm -rf bitbase/*.o	
 	@rm -rf egtb/*.gcda
@@ -347,8 +349,6 @@ gcc-profile-clean:
 	@rm -rf nnue/*.o	
 	@rm -rf random/*.gcda
 	@rm -rf random/*.o	
-	@rm -rf tune/*.gcda
-	@rm -rf tune/*.o
 	@rm -rf util/*.gcda
 	@rm -rf util/*.o
 	
