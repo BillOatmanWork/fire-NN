@@ -153,7 +153,6 @@ The NNUE implementation utilizes a modified version of Daniel Shaw's/Cfish excel
 
 Fire includes 'Raptor', a top reinforcement learning network trained by Sergio Vieri
 - https://www.chessprogramming.org/Sergio_Vieri
-(rename any other downloaded net -> raptor.bin and place it in the same directory as the Fire_8.NN.MC.3_x64 executable.)
 
 the MCTS implementation is derived from Stephane Nicolet's work
 - https://github.com/snicolet/Stockfish/commits/montecarlo
