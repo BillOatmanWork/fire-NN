@@ -174,6 +174,7 @@ No. Here are the results of Don Daily's SIM program (default values) today to me
 ![alt tag](https://raw.githubusercontent.com/FireFather/fire-NN/master/docs/matrix.png)
 
 As you can see Stockfish 14.1 and Stockfish 15 make the same moves ~64% of the time (see row 4, column 5)
+
 Fire 8.NN has an excellent score of ~43.34 % (see row 1), making different moves that SF almost 60% of the time.
 
 The Sim tool can be downloaded here:
