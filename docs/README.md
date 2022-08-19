@@ -167,7 +167,7 @@ http://www.chessdom.com/fire-the-chess-engine-releases-a-new-version/
 ## license
 Fire is distributed under the GNU General Public License. Please read LICENSE for more information.
 
-## Does Fire play like Stockfish? 
+## Does Fire NN play like Stockfish? 
 No. Here are the results of Don Daily's SIM program (default values) today to measure Fire 8.NN move selection vs the last 4 versions of Stockfish:
 
 ![alt tag](https://raw.githubusercontent.com/FireFather/fire-NN/master/docs/matrix.png)
