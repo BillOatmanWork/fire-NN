@@ -149,14 +149,8 @@ the endgame table bases are implemented using code adapted from Ronald de Man's
 The NNUE implementation utilizes a modified version of Daniel Shaw's/Cfish excellent nnue probe code:
 - [nnue-probe](https://github.com/dshawul/nnue-probe/)
 
-Fire includes 'Raptor', a top reinforcement learning network trained by Sergio Vieri
-- https://www.chessprogramming.org/Sergio_Vieri
-
 the MCTS implementation is derived from Stephane Nicolet's work
 - https://github.com/snicolet/Stockfish/commits/montecarlo
-
-the quiescent search positions for the tuner have been generously shared by
-- [Zurichess](https://bitbucket.org/zurichess/zurichess/src/master/)
 
 if you are interested in learning about my particular testing methodology, I've explained it in some detail here:
 http://www.chessdom.com/fire-the-chess-engine-releases-a-new-version/
