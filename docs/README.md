@@ -2,8 +2,7 @@
 
 ![alt tag](https://raw.githubusercontent.com/FireFather/fire/master/docs/fire.png)
 
-a strong, state-of-the-art, highly optimized, open-source freeware UCI chess engine...
-designed and programmed for modern 64-bit windows and linux systems
+A strong UCI chess engine including a unique NNUE evaluation created from SF & LC0 shared data
 
 
 ## features
