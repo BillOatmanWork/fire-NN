@@ -4,6 +4,8 @@
 
 A strong UCI chess engine including a unique NNUE evaluation created from SF & LC0 shared data
 
+- Fire without NNUE can be found here: https://github.com/FireFather/fire
+- Fire w/ NNUE from self-play can be found here: https://github.com/FireFather/fire-zero
 
 ## features
 - c++17
