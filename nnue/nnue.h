@@ -39,7 +39,7 @@
 #ifdef DLL_EXPORT
 #   define DLLExport EXTERNC __declspec(dllexport)
 #else
-#   define DLLExport EXTERNC __declspec(dllimport)
+#   define DLL_EXPORT EXTERNC __declspec(dllimport)
 #endif
 #else
 #   define _CDECL
@@ -76,7 +76,7 @@ typedef struct dirty_piece
 	int to[3];
 } dirty_piece;
 
-typedef struct Accumulator
+typedef struct accumulator
 {
 	alignas(64) int16_t accumulation[2][256];
 	int computed_accumulation;
@@ -116,10 +116,10 @@ void _CDECL nnue_init
 * Piece codes are
 *     wking=1, wqueen=2, wrook=3, wbishop= 4, wknight= 5, wpawn= 6,
 *     bking=7, bqueen=8, brook=9, bbishop=10, bknight=11, bpawn=12,
-*     
+*
 * Squares are
 *     A1=0, B1=1 ... H8=63
-*     
+*
 * Input format:
 *     piece[0] is white king, square[0] is its location
 *     piece[1] is black king, square[1] is its location
@@ -127,7 +127,7 @@ void _CDECL nnue_init
 *     piece[x], square[x] can be in any order
 *     ..
 *     piece[n+1] is set to 0 to represent end of array
-*     
+*
 * Returns
 *   Score relative to side to move in approximate centipawns
 */

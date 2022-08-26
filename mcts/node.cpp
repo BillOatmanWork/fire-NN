@@ -27,6 +27,7 @@
 #include "../pragma.h"
 #include "../search.h"
 #include "../thread.h"
+#include "../uci.h"
 #include "../util/util.h"
 
 mc_node get_node(const position& pos)
@@ -34,9 +35,9 @@ mc_node get_node(const position& pos)
 	uint64_t key1 = pos.key();
 	const uint64_t key2 = pos.pawn_key();
 
-	const auto range = mcts.equal_range(key1);
-	auto iterater1 = range.first;
-	const auto iterator2 = range.second;
+	const auto [fst, snd] = mcts.equal_range(key1);
+	auto iterater1 = fst;
+	const auto iterator2 = snd;
 	while (iterater1 != iterator2)
 	{
 		if (mc_node node = &(iterater1->second); node->key1 == key1 && node->key2 == key2)
@@ -145,12 +146,13 @@ edge* monte_carlo::best_child(mc_node node, const edge_statistic statistic) cons
 		}
 	}
 
-	if (print_children == true)
+	if (!bench_active && print_children == true)
 	{
+		//for (int k = 0; k < number_of_sons(node); k++)
 		for (int k = number_of_sons(node) - 1; k >= 0; k--)
 		{
 			acout() << "info string move "
-				<< k
+				<< k + 1
 				<< " "
 				<< util::move_to_string(children[k].move, pos_)
 
@@ -164,7 +166,7 @@ edge* monte_carlo::best_child(mc_node node, const edge_statistic statistic) cons
 				<< children[k].visits
 				<< std::endl;
 		}
-	print_children = false;
+		print_children = false;
 	}
 
 	return &children[best];

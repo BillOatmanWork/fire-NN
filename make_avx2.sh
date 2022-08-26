@@ -1,5 +1,5 @@
 #!/bin/bash
-# makefire_pext.sh
+# make_avx2.sh
 
 # Fire is a freeware UCI chess playing engine authored by Norman Schmidt.
 #  
@@ -16,5 +16,5 @@
 arch_cpu=x86-64-avx2
 make --no-print-directory -j profile-build ARCH=${arch_cpu} COMP=mingw
 strip fire.exe
-mv fire.exe Fire_9.NN.MC_x64_avx2.exe 
+mv fire.exe fire-NN_x64_avx2.exe 
 make gcc-profile-clean

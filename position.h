@@ -5,7 +5,7 @@
   which have been documented in detail at https://www.chessprogramming.org/
   and demonstrated via the very strong open-source chess engine Stockfish...
   https://github.com/official-stockfish/Stockfish.
-  
+
   Fire is free software: you can redistribute it and/or modify it under the
   terms of the GNU General Public License as published by the Free Software
   Foundation, either version 3 of the License, or any later version.
@@ -19,7 +19,7 @@
 #include "fire.h"
 
 class position;
-class Thread;
+class thread;
 
 struct s_move;
 struct threadinfo;
@@ -30,7 +30,7 @@ struct piece_square_stats;
 
 typedef piece_square_stats<24576, 24576> counter_move_values;
 
-constexpr int delayed_number{7};
+constexpr int delayed_number{ 7 };
 
 enum ptype : uint8_t
 {
@@ -141,7 +141,7 @@ struct position_info
 	square pin_by[num_squares];
 };
 
-static_assert(offsetof(struct position_info, key) == 48, "offset wrong");
+static_assert(offsetof(position_info, key) == 48, "offset wrong");
 
 class position
 {
@@ -153,7 +153,7 @@ public:
 	position(const position&) = default;
 	position& operator=(const position&) = delete;
 
-	position& set(const std::string& fen_str, bool is_chess960, Thread* th);
+	position& set(const std::string& fen_str, bool is_chess960, thread* th);
 
 	[[nodiscard]] uint64_t pieces() const;
 	[[nodiscard]] uint64_t pieces(uint8_t piece) const;
@@ -230,7 +230,7 @@ public:
 	void increase_game_ply();
 	void increase_tb_hits();
 	[[nodiscard]] bool is_chess960() const;
-	[[nodiscard]] Thread* my_thread() const;
+	[[nodiscard]] thread* my_thread() const;
 	[[nodiscard]] threadinfo* thread_info() const;
 	[[nodiscard]] cmhinfo* cmh_info() const;
 	[[nodiscard]] uint64_t visited_nodes() const;
@@ -242,7 +242,7 @@ public:
 	{
 		return pos_info_;
 	}
-	void copy_position(const position* pos, Thread* th, position_info* copy_state);
+	void copy_position(const position* pos, thread* th, const position_info* copy_state);
 	double epd_result;
 private:
 	void set_castling_possibilities(side color, square from_r);
@@ -258,7 +258,7 @@ private:
 
 	position_info* pos_info_;
 	side on_move_;
-	Thread* this_thread_;
+	thread* this_thread_;
 	threadinfo* thread_info_;
 	cmhinfo* cmh_info_;
 	ptype board_[num_squares];
@@ -313,7 +313,7 @@ inline bool position::advanced_pawn(const uint32_t move) const
 }
 
 template <uint8_t piece_type>
-uint64_t position::attack_from(const square sq) const
+inline uint64_t position::attack_from(const square sq) const
 {
 	return piece_type == pt_bishop
 		? attack_bishop_bb(sq, pieces())
@@ -368,7 +368,7 @@ inline int position::castling_possible(const  uint8_t castle) const
 
 inline int position::castling_possible(const side color) const
 {
-	return pos_info_->castle_possibilities & (white_short | white_long) << 2 * color;
+	return pos_info_->castle_possibilities & (white_short | white_long) << (2 * color);
 }
 
 inline cmhinfo* position::cmh_info() const
@@ -464,7 +464,7 @@ inline ptype position::moved_piece(const uint32_t move) const
 	return board_[from_square(move)];
 }
 
-inline Thread* position::my_thread() const
+inline thread* position::my_thread() const
 {
 	return this_thread_;
 }
@@ -512,6 +512,7 @@ inline ptype position::piece_on_square(const square sq) const
 
 inline square position::piece_square(const side color, const uint8_t piece) const
 {
+	assert(piece_number_[make_piece(color, piece)] == 1);
 	return piece_list_[make_piece(color, piece)][0];
 }
 

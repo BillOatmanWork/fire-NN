@@ -115,12 +115,12 @@ bool is_little_endian()
 	{
 		int i;
 		char c[sizeof(int)];
-	} x{};
+	} x;
 	x.i = 1;
 	return x.c[0] == 1;
 }
 
-static ubyte decompress_pairs(struct pairs_data* d, const uint64 idx)
+static ubyte decompress_pairs(pairs_data* d, const uint64 idx)
 {
 	static const auto islittleendian = is_little_endian();
 	return islittleendian
@@ -197,8 +197,8 @@ static int probe_wdl_table(const position& pos, int* success)
 
 	if (uint64 idx = 0; !ptr->has_pawns)
 	{
-		auto* entry = reinterpret_cast<struct tb_entry_piece*>(ptr);
-		auto* pc = entry->pieces[b_side];
+		const auto* entry = reinterpret_cast<struct tb_entry_piece*>(ptr);
+		const auto* pc = entry->pieces[b_side];
 		for (i = 0; i < entry->num;)
 		{
 			auto bb = pos.pieces(static_cast<side>((pc[i] ^ c_mirror) >> 3),
@@ -213,7 +213,7 @@ static int probe_wdl_table(const position& pos, int* success)
 	}
 	else
 	{
-		auto* entry = reinterpret_cast<struct tb_entry_pawn*>(ptr);
+		const auto* entry = reinterpret_cast<struct tb_entry_pawn*>(ptr);
 		const auto k = entry->file[0].pieces[0][0] ^ c_mirror;
 		auto bb = pos.pieces(static_cast<side>(k >> 3), pt_from_syz[k & 0x07]);
 		i = 0;
@@ -222,8 +222,8 @@ static int probe_wdl_table(const position& pos, int* success)
 			p[i++] = pop_lsb(&bb) ^ mirror;
 		} while (bb);
 		const auto f = pawn_file(entry, p);
-		auto* pc = entry->file[f].pieces[b_side];
-		for (; i < entry->num;)
+		const auto* pc = entry->file[f].pieces[b_side];
+		while (i < entry->num)
 		{
 			bb = pos.pieces(static_cast<side>((pc[i] ^ c_mirror) >> 3),
 				pt_from_syz[pc[i] & 0x07]);
@@ -241,7 +241,7 @@ static int probe_wdl_table(const position& pos, int* success)
 
 static int probe_dtz_table(const position& pos, const int wdl, int* success)
 {
-	struct tb_entry* ptr = nullptr;
+	tb_entry* ptr = nullptr;
 	auto i = 0, res = 0;
 	int p[tb_pieces];
 
@@ -317,7 +317,7 @@ static int probe_dtz_table(const position& pos, const int wdl, int* success)
 			*success = -1;
 			return 0;
 		}
-		auto* pc = entry->pieces;
+		const auto* pc = entry->pieces;
 		for (i = 0; i < entry->num;)
 		{
 			auto bb = pos.pieces(static_cast<side>((pc[i] ^ c_mirror) >> 3),
@@ -327,7 +327,7 @@ static int probe_dtz_table(const position& pos, const int wdl, int* success)
 				p[i++] = pop_lsb(&bb);
 			} while (bb);
 		}
-		idx = encode_piece(reinterpret_cast<struct tb_entry_piece*>(entry), entry->norm, p, entry->factor);
+		idx = encode_piece(reinterpret_cast<tb_entry_piece*>(entry), entry->norm, p, entry->factor);
 		res = decompress_pairs(entry->precomp, idx);
 
 		if (entry->flags & 2)
@@ -352,8 +352,8 @@ static int probe_dtz_table(const position& pos, const int wdl, int* success)
 			*success = -1;
 			return 0;
 		}
-		auto* pc = entry->file[f].pieces;
-		for (; i < entry->num;)
+		const auto* pc = entry->file[f].pieces;
+		while (i < entry->num)
 		{
 			bb = pos.pieces(static_cast<side>((pc[i] ^ c_mirror) >> 3),
 				pt_from_syz[pc[i] & 0x07]);
@@ -362,7 +362,7 @@ static int probe_dtz_table(const position& pos, const int wdl, int* success)
 				p[i++] = pop_lsb(&bb) ^ mirror;
 			} while (bb);
 		}
-		idx = encode_pawn(reinterpret_cast<struct tb_entry_pawn*>(entry), entry->file[f].norm, p, entry->file[f].factor);
+		idx = encode_pawn(reinterpret_cast<tb_entry_pawn*>(entry), entry->file[f].norm, p, entry->file[f].factor);
 		res = decompress_pairs(entry->file[f].precomp, idx);
 
 		if (entry->flags[f] & 2)
@@ -507,7 +507,8 @@ static int probe_dtz_no_ep(position& pos, int* success)
 		return wdl == 2 ? 1 : 101;
 
 	s_move stack[192];
-	s_move* moves = nullptr, * end = nullptr;
+	s_move* moves = nullptr;
+	const s_move* end = nullptr;
 
 	if (wdl > 0)
 	{

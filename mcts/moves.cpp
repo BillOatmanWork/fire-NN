@@ -51,7 +51,7 @@ void monte_carlo::generate_moves()
 		if (const int n = number_of_sons(current_node()); n > 0)
 		{
 			edge* children = get_list_of_children(current_node());
-			std::sort(children, children + n, compare_prior);
+			std::sort(children, children + n, compare_robust_choice);
 		}
 
 		mc_node s = current_node();

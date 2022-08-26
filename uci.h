@@ -5,7 +5,7 @@
   which have been documented in detail at https://www.chessprogramming.org/
   and demonstrated via the very strong open-source chess engine Stockfish...
   https://github.com/official-stockfish/Stockfish.
-  
+
   Fire is free software: you can redistribute it and/or modify it under the
   terms of the GNU General Public License as published by the Free Software
   Foundation, either version 3 of the License, or any later version.
@@ -30,8 +30,9 @@ inline bool uci_chess960 = false;
 inline bool uci_syzygy_50_move_rule = false;
 inline int uci_syzygy_probe_depth = 1;
 inline int uci_syzygy_probe_limit = 6;
-inline std::string uci_syzygy_path = "";
-inline std::string uci_nnue_evalfile = "raptor.bin";
+
+inline std::string uci_syzygy_path;
+inline std::string uci_nnue_evalfile = "08272022-004408.bin";
 
 inline std::string engine_mode = "nnue";
 inline bool bench_active = false;

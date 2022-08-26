@@ -31,7 +31,7 @@
 #include "position.h"
 #include "search.h"
 
-class Thread
+class thread
 {
 	std::thread native_thread_;
 	Mutex mutex_;
@@ -40,8 +40,8 @@ class Thread
 	int thread_index_;
 
 public:
-	Thread();
-	virtual ~Thread();
+	thread();
+	virtual ~thread();
 	virtual void begin_search();
 	void idle_loop();
 	void wake(bool activate_search);
@@ -55,7 +55,7 @@ public:
 	rootmoves root_moves;
 	int completed_depth = no_depth;
 	int active_pv{};
-	continuation_history cont_history;
+	continuation_history cont_history{};
 	void clear();
 };
 
@@ -79,7 +79,7 @@ struct threadinfo
 	pawn::pawn_hash pawn_table{};
 };
 
-struct mainthread final : Thread
+struct mainthread final : thread
 {
 	void begin_search() override;
 	void check_time();
@@ -95,7 +95,7 @@ struct mainthread final : Thread
 	int calls_cnt{};
 };
 
-struct threadpool : std::vector<Thread*>
+struct threadpool : std::vector<thread*>
 {
 	void init();
 	void exit();
@@ -103,8 +103,9 @@ struct threadpool : std::vector<Thread*>
 	int thread_count{};
 	time_point start{};
 	int total_analyze_time{};
-	Thread* threads[max_threads]{};
-	mainthread* main()
+	thread* threads[max_threads]{};
+
+	[[nodiscard]] mainthread* main() const
 	{
 		return static_cast<mainthread*>(threads[0]);
 	}
@@ -132,8 +133,10 @@ class spinlock {
 	std::atomic_int lock_;
 
 public:
-	spinlock() { lock_ = 1; }
-	spinlock(const spinlock&) { lock_ = 1; }
+	spinlock() : lock_(1) {
+	}
+	spinlock(const spinlock&) : lock_(1) {
+	}
 
 	void acquire() {
 		while (lock_.fetch_sub(1, std::memory_order_acquire) != 1)

@@ -17,7 +17,6 @@
 #pragma once
 #include "define.h"
 #include "fire.h"
-#include "thread.h"
 
 enum hashflags : uint8_t
 {
@@ -39,7 +38,7 @@ struct main_hash_entry
 {
 	[[nodiscard]] uint32_t move() const
 	{
-		return static_cast<uint32_t>(move_);
+		return move_;
 	}
 
 	[[nodiscard]] int value() const
@@ -131,12 +130,12 @@ public:
 	void init(size_t mb_size);
 	void clear() const;
 
-	[[nodiscard]] main_hash_entry* entry(const uint64_t key) const
+	[[nodiscard]] inline main_hash_entry* entry(const uint64_t key) const
 	{
 		return reinterpret_cast<main_hash_entry*>(reinterpret_cast<char*>(hash_mem_) + (key & bucket_mask_));
 	}
 
-	void prefetch_entry(const uint64_t key) const
+	inline void prefetch_entry(const uint64_t key) const
 	{
 		prefetch(entry(key));
 	}

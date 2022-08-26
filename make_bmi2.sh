@@ -1,5 +1,5 @@
 #!/bin/bash
-# makefire_pext.sh
+# make_bmi2.sh
 
 # Fire is a freeware UCI chess playing engine authored by Norman Schmidt.
 #  
@@ -16,5 +16,5 @@
 arch_cpu=x86-64-bmi2
 make --no-print-directory -j profile-build ARCH=${arch_cpu} COMP=mingw
 strip fire.exe
-mv fire.exe Fire_9.NN.MC_x64_bmi2.exe 
+mv fire.exe fire-NN_x64_bmi2.exe 
 make gcc-profile-clean

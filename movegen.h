@@ -5,7 +5,7 @@
   which have been documented in detail at https://www.chessprogramming.org/
   and demonstrated via the very strong open-source chess engine Stockfish...
   https://github.com/official-stockfish/Stockfish.
-  
+
   Fire is free software: you can redistribute it and/or modify it under the
   terms of the GNU General Public License as published by the Free Software
   Foundation, either version 3 of the License, or any later version.
@@ -51,12 +51,12 @@ namespace movegen
 {
 	template <side me, move_gen mg>
 	s_move* moves_for_pawn(const position& pos, s_move* moves, uint64_t target);
-	
+
 	template <side me, uint8_t piece, bool only_check_moves>
 	s_move* moves_for_piece(const position& pos, s_move* moves, uint64_t target);
 
 	template < uint8_t castle, bool only_check_moves, bool chess960>
-	s_move* get_castle(const position& pos, s_move* moves);	
+	s_move* get_castle(const position& pos, s_move* moves);
 }
 
 inline bool operator<(const s_move& f, const s_move& s)
@@ -78,7 +78,7 @@ struct legal_move_list
 
 	[[nodiscard]] const s_move* begin() const
 	{
-		return moves_; 
+		return moves_;
 	}
 
 	[[nodiscard]] const s_move* end() const

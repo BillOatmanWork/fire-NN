@@ -5,7 +5,7 @@
   which have been documented in detail at https://www.chessprogramming.org/
   and demonstrated via the very strong open-source chess engine Stockfish...
   https://github.com/official-stockfish/Stockfish.
-  
+
   Fire is free software: you can redistribute it and/or modify it under the
   terms of the GNU General Public License as published by the Free Software
   Foundation, either version 3 of the License, or any later version.
@@ -17,11 +17,9 @@
 // disable specific compiler warnings
 #pragma once
 #ifdef _MSC_VER
-#pragma warning(disable: 4100) // '': unreferenced formal parameter 
 #pragma warning(disable: 4127) // conditional expression is constant
 #pragma warning(disable: 4146) // unary minus operator applied to unsigned type
 #pragma warning(disable: 4189) // local variable is initialized but not referenced
-#pragma warning(disable: 4244) // conversion from '' to '', possible loss of data 
 #pragma warning(disable: 4706) // assignment within conditional expression
 #else
 #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"

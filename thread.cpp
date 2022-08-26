@@ -23,21 +23,18 @@
 
 cmhinfo* cmh_data;
 
-Thread::Thread()
+thread::thread() : exit_(false), search_active_(true), thread_index_(thread_pool.thread_count)
 {
-	exit_ = false;
-	thread_index_ = thread_pool.thread_count;
-
 	std::unique_lock lk(mutex_);
-	search_active_ = true;
-	native_thread_ = std::thread(&Thread::idle_loop, this);
+
+	native_thread_ = std::thread(&thread::idle_loop, this);
 	sleep_condition_.wait(lk, [&]
-		{
-			return !search_active_;
-		});
+	{
+		return !search_active_;
+	});
 }
 
-Thread::~Thread()
+thread::~thread()
 {
 	mutex_.lock();
 	exit_ = true;
@@ -77,21 +74,12 @@ void threadpool::delete_counter_move_history()
 	cmh_data->counter_move_stats.clear();
 }
 
-void Thread::clear() {
-
-  for (auto& to : cont_history)
-      for (auto& h : to)
-          h->fill(0);
-
-  cont_history[0][0]->fill(0 - 1);
-}
-
 void threadpool::change_thread_count(int const num_threads)
 {
 	assert(uci_threads > 0);
 
 	while (thread_count < num_threads)
-		threads[thread_count++] = new Thread;
+		threads[thread_count++] = new thread;
 
 	while (thread_count > num_threads)
 		delete threads[--thread_count];
@@ -105,7 +93,7 @@ void threadpool::exit()
 	free(cmh_data);
 }
 
-void Thread::idle_loop()
+void thread::idle_loop()
 {
 	cmhi = cmh_data;
 
@@ -144,25 +132,25 @@ uint64_t threadpool::tb_hits() const
 	return hits;
 }
 
-void Thread::wait(const std::atomic_bool& condition)
+void thread::wait(const std::atomic_bool& condition)
 {
 	std::unique_lock lk(mutex_);
 	sleep_condition_.wait(lk, [&]
-		{
-			return static_cast<bool>(condition);
-		});
+	{
+		return static_cast<bool>(condition);
+	});
 }
 
-void Thread::wait_for_search_to_end()
+void thread::wait_for_search_to_end()
 {
 	std::unique_lock lk(mutex_);
 	sleep_condition_.wait(lk, [&]
-		{
-			return !search_active_;
-		});
+	{
+		return !search_active_;
+	});
 }
 
-void Thread::wake(const bool activate_search)
+void thread::wake(const bool activate_search)
 {
 	std::unique_lock lk(mutex_);
 

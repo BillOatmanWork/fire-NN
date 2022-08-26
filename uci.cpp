@@ -85,11 +85,11 @@ void uci_loop(const int argc, char* argv[])
 
 		token.clear();
 		is >> std::skipws >> token;
-		
+
 		// check for significant UCI tokens
 		if (token == "uci")
 		{
-			acout() << "id name " << program << " " << version << " " << platform << " " << bmis << std::endl;
+			acout() << "id name " << version << std::endl;
 			acout() << "id author " << author << std::endl;
 			acout() << "option name Hash type spin default 64 min 16 max 1048576" << std::endl;
 			acout() << "option name Threads type spin default 1 min 1 max 128" << std::endl;
@@ -104,6 +104,7 @@ void uci_loop(const int argc, char* argv[])
 			acout() << "option name MCTS type check default false" << std::endl;			
 			acout() << "option name Ponder type check default false" << std::endl;
 			acout() << "option name UCI_Chess960 type check default false" << std::endl;
+			acout() << "option name ClearHash type button" << std::endl;
 			acout() << "option name Syzygy50MoveRule type check default true" << std::endl;
 			acout() << "option name SyzygyPath type string default <empty>" << std::endl;
 			acout() << "option name NnueEvalFile type string default " << uci_nnue_evalfile << std::endl;			
@@ -129,7 +130,7 @@ void uci_loop(const int argc, char* argv[])
 		{
 			go(pos, is);
 		}
-		else if (token == "stop" || (token ==  "ponderhit" && search::signals.stop_if_ponder_hit))
+		else if (token == "stop" || (token == "ponderhit" && search::signals.stop_if_ponder_hit))
 		{
 			search::signals.stop_analyzing = true;
 			thread_pool.main()->wake(false);
@@ -141,33 +142,33 @@ void uci_loop(const int argc, char* argv[])
 		else if (token == "perft")
 		{
 			auto depth = 7;
-			auto &fen = startpos;
-			
+			auto& fen = startpos;
+
 			is >> depth;
 			is >> fen;
-			
+
 			perft(depth, fen);
 		}
 		else if (token == "divide")
 		{
 			auto depth = 7;
-			auto &fen = startpos;
-			
+			auto& fen = startpos;
+
 			is >> depth;
 			is >> fen;
-			
+
 			divide(depth, fen);
 		}
 		else if (token == "bench")
 		{	//bench depth = 16 unless specified on command line
-			auto bench_depth = is >> token ? token : "16";	
+			auto bench_depth = is >> token ? token : "16";
 			// to suppress extraneous output			
 			bench_active = true;
 			bench(stoi(bench_depth));
 			bench_active = false;
 		}
 		else
-		{	
+		{
 		}
 	} while (token != "quit" && argc == 1);
 	// if loop is broken with 'quit', exit and destroy thread pool
@@ -279,7 +280,7 @@ void set_option(std::istringstream& is)
 					uci_mcts = true;
 				else
 					uci_mcts = false;
-				acout() << "info string MCTS " << token << std::endl;
+				acout() << "info string MCTS " << uci_mcts << std::endl;
 				break;
 			}	
 			if (token == "Ponder")
@@ -290,7 +291,7 @@ void set_option(std::istringstream& is)
 					uci_ponder = true;
 				else
 					uci_ponder = false;
-				acout() << "info string Ponder " << token << std::endl;
+				acout() << "info string Ponder " << uci_ponder << std::endl;
 				break;
 			}
 			if (token == "UCI_Chess960")
@@ -301,7 +302,13 @@ void set_option(std::istringstream& is)
 					uci_chess960 = true;
 				else
 					uci_chess960 = false;
-				acout() << "info string UCI_Chess960 " << token << std::endl;
+				acout() << "info string UCI_Chess960 " << uci_chess960 << std::endl;
+				break;
+			}
+			if (token == "ClearHash")
+			{
+				main_hash.clear();
+				acout() << "info string Hash: cleared" << std::endl;
 				break;
 			}
 			if (token == "Syzygy50MoveRule")
@@ -312,7 +319,7 @@ void set_option(std::istringstream& is)
 					uci_syzygy_50_move_rule = true;
 				else
 					uci_syzygy_50_move_rule = false;
-				acout() << "info string Syzygy50MoveRule " << token << std::endl;
+				acout() << "info string Syzygy50MoveRule " << uci_syzygy_50_move_rule << std::endl;
 				break;
 			}
 			if (token == "SyzygyPath")
@@ -392,13 +399,13 @@ void go(position& pos, std::istringstream& is)
 		{
 			is >> param.move_time;
 			param.infinite = 0;
-		}		
+		}
 		else if (token == "infinite")
 			param.infinite = 1;
 	}
 	if (engine_mode == "random")
 		random(pos);
-	else	
+	else
 		thread_pool.begin_search(pos, param);
 }
 

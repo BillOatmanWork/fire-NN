@@ -28,8 +28,8 @@
 // it can be started via command line 'bench', or via Bench button in your GUI's UCI dialog
 void bench(const int depth)
 {
-	static char file_name[256]{};
-	char buf[256]{};
+	static char file_name[64]{};
+	char buf[32]{};
 
 	uint64_t nodes = 0;
 	auto pos_num = 0;
@@ -107,7 +107,7 @@ void bench(const int depth)
 	bench_log.open(file_name);
 
 	// write formatted system info and bench results to log file
-	bench_log << program << " " << version << " " << platform << " " << bmis << std::endl;
+	bench_log << version;
 	bench_log << "depth " << depth << std::endl;
 	bench_log << "nodes " << nodes << std::endl;
 	bench_log << "time " << std::fixed << std::setprecision(2) << elapsed_time << " secs" << std::endl;

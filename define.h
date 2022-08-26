@@ -5,7 +5,7 @@
   which have been documented in detail at https://www.chessprogramming.org/
   and demonstrated via the very strong open-source chess engine Stockfish...
   https://github.com/official-stockfish/Stockfish.
-  
+
   Fire is free software: you can redistribute it and/or modify it under the
   terms of the GNU General Public License as published by the Free Software
   Foundation, either version 3 of the License, or any later version.
@@ -15,28 +15,26 @@
 */
 
 #pragma once
-
-#ifdef _MSC_VER
-#define USE_PEXT
-#define USE_AVX2
-#endif
+#include <string>
 
 constexpr auto program = "Fire";
-constexpr auto version= "8.NN.MC.3";
+inline std::string version = "";
 constexpr auto author = "N. Schmidt";
 constexpr auto platform = "x64";
 
 // specify correct bit manipulation instruction set constant, as this will be appended
 // to the fully distinguished engine name after platform
-#if defined(USE_PEXT)
+#ifdef USE_PEXT
 constexpr auto bmis = "bmi2";
 constexpr bool use_pext = true;
-#elif defined(USE_AVX2)
+#else
+#ifdef USE_AVX2
 constexpr auto bmis = "avx2";
 constexpr bool use_pext = false;
 #else
-constexpr auto bmis = "popc";
+constexpr auto bmis = "sse41";
 constexpr bool use_pext = false;
+#endif
 #endif
 
 // many new instructions require data that's aligned to 16-byte boundaries, so 64-byte alignment improves performance

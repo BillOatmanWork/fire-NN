@@ -188,7 +188,7 @@ sfactor endgame_kbpkn(const position& pos)
 
 	if (const auto weak_king_sq = pos.king(weak); file_of(weak_king_sq) == file_of(pawn_sq)
 		&& relative_rank(strong, pawn_sq) < relative_rank(strong, weak_king_sq)
-		&& (different_color(weak_king_sq, strong_bishop_sq)	
+		&& (different_color(weak_king_sq, strong_bishop_sq)
 		|| relative_rank(strong, weak_king_sq) <= rank_6))
 		return draw_factor;
 
@@ -294,6 +294,9 @@ template <side strong>
 sfactor endgame_kpk(const position& pos)
 {
 	const auto weak = ~strong;
+	assert(pos.non_pawn_material(strong) == mat_0);
+	assert(pos.number(strong, pt_pawn) >= 2);
+
 	const auto square_k = pos.king(weak);
 
 	if (const auto pawns = pos.pieces(strong, pt_pawn); !(pawns & ~ranks_forward_bb(weak, rank_of(square_k)))
@@ -571,6 +574,7 @@ template <side strong>
 sfactor endgame_kqkrp(const position& pos)
 {
 	const auto weak = ~strong;
+	assert(pos.number(weak, pt_rook) == 1);
 	assert(pos.number(weak, pt_pawn) >= 1);
 
 	const auto king_sq = pos.king(weak);

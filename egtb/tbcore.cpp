@@ -621,7 +621,7 @@ static uint64 encode_piece(const tb_entry_piece* ptr, const ubyte* norm, int* po
 		else if (offdiag[pos[1]])
 			idx = static_cast<uint64_t>(6 * 63 * 62) + static_cast<uint64_t>(diag[pos[0]]) * static_cast<uint64_t>(28 * 62) + static_cast<uint64_t>(lower[pos[1]]) * static_cast<uint64_t>(62) + static_cast<uint64_t>(pos[2]) - static_cast<uint64_t>(j);
 		else if (offdiag[pos[2]])
-			idx =  static_cast<uint64_t>(6 * 63 * 62 + 4 * 28 * 62) +  static_cast<uint64_t>(diag[pos[0]]) *  static_cast<uint64_t>(7 * 28) +  (static_cast<uint64_t>(diag[pos[1]]) - static_cast<uint64_t>(i)) *  static_cast<uint64_t>(28) + lower[pos[2]];
+			idx = static_cast<uint64_t>(6 * 63 * 62 + 4 * 28 * 62) + static_cast<uint64_t>(diag[pos[0]]) * static_cast<uint64_t>(7 * 28) + (static_cast<uint64_t>(diag[pos[1]]) - static_cast<uint64_t>(i)) * static_cast<uint64_t>(28) + lower[pos[2]];
 		else
 			idx = static_cast<uint64_t>(6 * 63 * 62 + 4 * 28 * 62 + 4 * 7 * 28) + (static_cast<uint64_t>(diag[pos[0]]) * static_cast<uint64_t>(7 * 6)) + (static_cast<uint64_t>(diag[pos[1]]) - static_cast<uint64_t>(i)) * static_cast<uint64_t>(6) + (static_cast<uint64_t>(diag[pos[2]]) - static_cast<uint64_t>(j));
 		i = 3;

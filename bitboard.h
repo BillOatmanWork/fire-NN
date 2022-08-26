@@ -5,7 +5,7 @@
   which have been documented in detail at https://www.chessprogramming.org/
   and demonstrated via the very strong open-source chess engine Stockfish...
   https://github.com/official-stockfish/Stockfish.
-  
+
   Fire is free software: you can redistribute it and/or modify it under the
   terms of the GNU General Public License as published by the Free Software
   Foundation, either version 3 of the License, or any later version.
@@ -417,7 +417,7 @@ inline uint64_t attack_bb(const uint8_t piece_t, const square sq, const uint64_t
 }
 
 template <side color>
-uint64_t pawn_attack(const uint64_t bb)
+inline uint64_t pawn_attack(const uint64_t bb)
 {
 	if constexpr (color == white)
 		return shift_bb<north_west>(bb) | shift_bb<north_east>(bb);
@@ -426,7 +426,7 @@ uint64_t pawn_attack(const uint64_t bb)
 }
 
 template <side color>
-uint64_t shift_up(const uint64_t bb)
+inline uint64_t shift_up(const uint64_t bb)
 {
 	if constexpr (color == white)
 		return shift_bb<north>(bb);
@@ -435,7 +435,7 @@ uint64_t shift_up(const uint64_t bb)
 }
 
 template <side color>
-uint64_t shift_down(const uint64_t bb)
+inline uint64_t shift_down(const uint64_t bb)
 {
 	if constexpr (color == white)
 		return shift_bb<south>(bb);
@@ -444,7 +444,7 @@ uint64_t shift_down(const uint64_t bb)
 }
 
 template <side color>
-uint64_t shift_up_left(const uint64_t bb)
+inline uint64_t shift_up_left(const uint64_t bb)
 {
 	if constexpr (color == white)
 		return shift_bb<north_west>(bb);
@@ -453,7 +453,7 @@ uint64_t shift_up_left(const uint64_t bb)
 }
 
 template <side color>
-uint64_t shift_up_right(const uint64_t bb)
+inline uint64_t shift_up_right(const uint64_t bb)
 {
 	if constexpr (color == white)
 		return shift_bb<north_east>(bb);

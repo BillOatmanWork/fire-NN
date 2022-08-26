@@ -51,11 +51,11 @@ uint32_t monte_carlo::search()
 			print_pv(depth);
 		}
 	}
-	
-		depth++;
-		print_pv(depth);
 
-		print_children = true;
+	depth++;
+	print_pv(depth);
+
+	print_children = true;
 
 	return best_child(root_, stat_visits)->move;
 }
@@ -92,7 +92,9 @@ void mainthread::check_time()
 	if (search::param.ponder)
 		return;
 
-	if (constexpr int time_numerator = 10; (search::param.use_time_calculating() && (elapsed > time_control.maximum() * time_numerator / time_denominator || search::signals.stop_if_ponder_hit))
+	if (constexpr int time_numerator = 10; (search::param.use_time_calculating()
+		&& (elapsed > time_control.maximum() * time_numerator / time_denominator
+			|| search::signals.stop_if_ponder_hit))
 		|| (search::param.move_time && elapsed >= search::param.move_time)
 		|| (search::param.nodes && thread_pool.visited_nodes() >= search::param.nodes))
 		search::signals.stop_analyzing = true;

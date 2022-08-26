@@ -144,7 +144,7 @@ square position::calculate_threat() const
 	return no_square;
 }
 
-void position::copy_position(const position* pos, Thread* th, position_info* copy_state)
+void position::copy_position(const position* pos, thread* th, const position_info* copy_state)
 {
 	std::memcpy(this, pos, sizeof(position));
 	if (th)
@@ -442,7 +442,7 @@ void position::play_move(const uint32_t move, const bool gives_check)
 
 	if (pos_info_->castle_possibilities && castle_mask_[from] | castle_mask_[to])
 	{
-		const int8_t castle = castle_mask_[from] | castle_mask_[to];
+		const uint8_t castle = castle_mask_[from] | castle_mask_[to];
 		key ^= zobrist::castle[pos_info_->castle_possibilities & castle];
 		pos_info_->castle_possibilities &= ~castle;
 	}
@@ -602,11 +602,14 @@ bool position::see_test(const uint32_t move, const int limit) const
 		value += see_value[capture_piece];
 		if (value < 0)
 			return false;
+
 		occupied ^= bb & -bb;
+
 		if (!(capture_piece & 1))
 			attackers |= attack_bishop_bb(to, occupied) & (pieces(pt_bishop) | pieces(pt_queen));
 		if (capture_piece >= pt_rook)
 			attackers |= attack_rook_bb(to, occupied) & (pieces(pt_rook) | pieces(pt_queen));
+
 		attackers &= occupied;
 
 		my_attackers = attackers & pieces(me);
@@ -641,7 +644,9 @@ bool position::see_test(const uint32_t move, const int limit) const
 		value -= see_value[capture_piece];
 		if (value >= 0)
 			return true;
+
 		occupied ^= bb & -bb;
+
 		if (!(capture_piece & 1))
 			attackers |= attack_bishop_bb(to, occupied) & (pieces(pt_bishop) | pieces(pt_queen));
 		if (capture_piece >= pt_rook)
@@ -731,7 +736,7 @@ void position::set_position_info(position_info* si) const
 			si->non_pawn_material[color] += material_value[piece] * static_cast<int>(piece_number_[make_piece(color, piece)]);
 }
 
-position& position::set(const std::string& fen_str, const bool is_chess960, Thread* th)
+position& position::set(const std::string& fen_str, const bool is_chess960, thread* th)
 {
 	assert(th != nullptr);
 
@@ -830,7 +835,9 @@ void position::take_move_back(const uint32_t move)
 	const auto to = to_square(move);
 	auto piece = piece_on_square(to);
 
+	assert(empty_square(from) || move_type(move) == castle_move);
 	assert(piece_type(pos_info_->captured_piece) != pt_king);
+	assert(piece == pos_info_->moved_piece);
 
 	if (move < static_cast<uint32_t>(castle_move))
 	{

@@ -38,10 +38,10 @@ bool monte_carlo::should_output_result() const
 	const time_point output_delay = now() - last_output_time_;
 
 	if (elapsed < 1100)            return output_delay >= 100;
-	if (elapsed < 11 * 1000)       return output_delay >= 1000;
-	if (elapsed < 61 * 1000)       return output_delay >= 10000;
-	if (elapsed < 6 * 60 * 1000)   return output_delay >= 30000;
-	if (elapsed < 61 * 60 * 1000)  return output_delay >= 60000;
+	if (elapsed < 11000)       return output_delay >= 1000;
+	if (elapsed < 61000)       return output_delay >= 10000;
+	if (elapsed < 360000)   return output_delay >= 30000;
+	if (elapsed < 3660000)  return output_delay >= 60000;
 
 	return output_delay >= 60000;
 }
@@ -153,15 +153,19 @@ void monte_carlo::print_pv(const int depth)
 		assert(static_cast<int>(mc_root_moves.size()) == number_of_sons(root_));
 		assert(is_root(current_node()));
 
-		pv = create_pv(pos_, depth, -max_score, max_score);
+		if (!bench_active)
+			pv = create_pv(pos_, depth, -max_score, max_score);
 	}
 	else
 	{
 		mc_root_moves.emplace_back(no_move);
-		pv = "info depth 0 score " + score_cp(pos_.is_in_check() ? -mate_score : draw_score);
+
+		if (!bench_active)
+			pv = "info depth 0 score " + score_cp(pos_.is_in_check() ? -mate_score : draw_score);
 	}
 
-	acout() << pv << std::endl;
+	if (!bench_active)
+		acout() << pv << std::endl;
 
 	last_output_time_ = now();
 }

@@ -30,6 +30,8 @@ namespace endgame
 {
 	square normalize_pawn_side(const position& pos, const side strong_side, square sq)
 	{
+		assert(pos.number(strong_side, pt_pawn) == 1);
+
 		if (file_of(pos.piece_square(strong_side, pt_pawn)) >= file_e)
 			sq = static_cast<square>(sq ^ 7);
 
@@ -85,7 +87,7 @@ void endgames::add_value(const char* pieces, const endgame_value f_w, const endg
 // king and pawn vs lone king
 // probes the king and pawn vs king table (see kpk.cpp)
 template <side strong>
-int endgame_kpk(const position & pos)
+int endgame_kpk(const position& pos)
 {
 	const auto weak = ~strong;
 	const auto strong_k = endgame::normalize_pawn_side(pos, strong, pos.king(strong));
@@ -105,7 +107,7 @@ int endgame_kpk(const position & pos)
 
 // king & queen vs king & rook
 template <side strong>
-int endgame_kqkr(const position & pos)
+int endgame_kqkr(const position& pos)
 {
 	const auto weak = ~strong;
 	const auto strong_k = pos.king(strong);
@@ -120,7 +122,7 @@ int endgame_kqkr(const position & pos)
 
 // king and mating material vs lone king
 template <side strong>
-int endgame_kxk(const position & pos)
+int endgame_kxk(const position& pos)
 {
 	if (pos.is_in_check())
 		return score_0;
@@ -147,8 +149,8 @@ int endgame_kxk(const position & pos)
 	return strong == pos.on_move() ? result : -result;
 }
 
-template int endgame_kxk<white>(const position & pos);
-template int endgame_kxk<black>(const position & pos);
+template int endgame_kxk<white>(const position& pos);
+template int endgame_kxk<black>(const position& pos);
 
 // we use text strings that resemble binary numbers to represent the pieces for each side in a position
 // the number order corresponds with non-enumerated piece type values listed in fire.h
@@ -177,7 +179,7 @@ void endgames::init_endgames()
 	factor_functions[factor_number_++] = &endgame_kqkrp<black>;
 }
 
-int endgames::probe_scale_factor(const uint64_t key, side & strong_side)
+int endgames::probe_scale_factor(const uint64_t key, side& strong_side)
 {
 	function_index_map::const_iterator iteration = map_scale_factor_.find(key);
 

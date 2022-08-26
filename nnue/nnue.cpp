@@ -44,7 +44,7 @@
 #define USE_SSE3   1
 #define USE_SSE2   1
 #define USE_SSE    1
-#define IS_64BIT   1
+#define IS_64_BIT   1
 #endif
 //-------------------
 
@@ -84,7 +84,7 @@
 #define ALIGNMENT_HACK
 #endif
 
-#if defined(USE_NEON) && !defined(IS_64BIT)
+#if defined(USE_NEON) && !defined(IS_64_BIT)
 INLINE int16x8_t vmovl_high_s16(int8x16_t v)
 {
 	return vmovl_s16(vget_high_s16(v));
@@ -164,16 +164,16 @@ typedef __m256i vec8_t;
 typedef uint32_t mask_t;
 
 template<typename T1, typename T2>
-constexpr auto VEC_ADD_16(T1 a, T2 b) { return _mm256_add_epi16(a,b); }
+constexpr auto vec_add_16(T1 a, T2 b) { return _mm256_add_epi16(a, b); }
 
 template<typename T1, typename T2>
-constexpr auto VEC_SUB_16(T1 a, T2 b) { return _mm256_sub_epi16(a,b); }
+constexpr auto vec_sub_16(T1 a, T2 b) { return _mm256_sub_epi16(a, b); }
 
 template<typename T1, typename T2>
-constexpr auto VEC_PACKS(T1 a, T2 b) { return _mm256_packs_epi16(a,b); }
+constexpr auto vec_packs(T1 a, T2 b) { return _mm256_packs_epi16(a, b); }
 
 template<typename T>
-constexpr auto VEC_MASK_POS(T a) { return _mm256_movemask_epi8(_mm256_cmpgt_epi8(a,_mm256_setzero_si256())); }
+constexpr auto vec_mask_pos(T a) { return _mm256_movemask_epi8(_mm256_cmpgt_epi8(a, _mm256_setzero_si256())); }
 
 #elif USE_SSE2
 #define SIMD_WIDTH 128
@@ -223,7 +223,7 @@ typedef uint8_t mask_t; // dummy
 
 #endif
 
-#ifdef IS_64BIT
+#ifdef IS_64_BIT
 typedef uint64_t mask2_t;
 #else
 typedef uint32_t mask2_t;
@@ -297,7 +297,7 @@ static void append_changed_indices(const Position* pos, index_list removed[2],
 		for (int c = 0; c < 2; c++)
 		{
 			reset[c] = dp->pc[0] == static_cast<int>(KING(c));
-			
+
 			if (reset[c])
 				half_kp_append_active_indices(pos, c, &added[c]);
 			else
@@ -311,7 +311,7 @@ static void append_changed_indices(const Position* pos, index_list removed[2],
 		{
 			reset[c] = dp->pc[0] == static_cast<int>(KING(c))
 				|| dp2->pc[0] == static_cast<int>(KING(c));
-			
+
 			if (reset[c])
 				half_kp_append_active_indices(pos, c, &added[c]);
 			else
@@ -432,7 +432,7 @@ INLINE bool next_idx(unsigned* idx, unsigned* offset, mask2_t* v,
 		if (*offset >= in_dims) return false;
 		memcpy(v, reinterpret_cast<char*>(mask) + (*offset / 8), sizeof(mask2_t));
 	}
-#ifdef IS_64BIT
+#ifdef IS_64_BIT
 	* idx = *offset + bsf(*v);
 #else
 	* idx = *offset + bsf(*v);
@@ -529,15 +529,15 @@ INLINE void affine_txfm(const int8_t* input, void* output, unsigned in_dims, uns
 	mask2_t v;
 	unsigned idx;
 
-	
+
 	memcpy(&v, in_mask, sizeof(mask2_t));
 	for (unsigned offset = 0; offset < in_dims;) {
 		if (!next_idx(&idx, &offset, &v, in_mask, in_dims))
 			break;
-		
+
 		first = reinterpret_cast<__m256i*>(weights)[idx];
 		uint16_t factor = static_cast<unsigned char>(input[idx]);
-		
+
 		if (next_idx(&idx, &offset, &v, in_mask, in_dims))
 		{
 			second = reinterpret_cast<__m256i*>(weights)[idx];
@@ -547,7 +547,7 @@ INLINE void affine_txfm(const int8_t* input, void* output, unsigned in_dims, uns
 		{
 			second = k_zero;
 		}
-		__m256i mul = _mm256_set1_epi16(factor), prod, signs;
+		__m256i mul = _mm256_set1_epi16(static_cast<short>(factor)), prod, signs;
 		prod = _mm256_maddubs_epi16(mul, _mm256_unpacklo_epi8(first, second));
 		signs = _mm256_cmpgt_epi16(k_zero, prod);
 		out_0 = _mm256_add_epi32(out_0, _mm256_unpacklo_epi16(prod, signs));
@@ -1011,7 +1011,7 @@ INLINE void refresh_accumulator(const Position* pos)
 				const auto column = reinterpret_cast<vec16_t*>(&ft_weights[offset]);
 
 				for (unsigned j = 0; j < num_regs; j++)
-					acc[j] = VEC_ADD_16(acc[j], column[j]);
+					acc[j] = vec_add_16(acc[j], column[j]);
 			}
 
 			for (unsigned j = 0; j < num_regs; j++)
@@ -1080,7 +1080,7 @@ INLINE bool update_accumulator(const Position* pos)
 
 					const auto column = reinterpret_cast<vec16_t*>(&ft_weights[offset]);
 					for (unsigned j = 0; j < num_regs; j++)
-						acc[j] = VEC_SUB_16(acc[j], column[j]);
+						acc[j] = vec_sub_16(acc[j], column[j]);
 				}
 			}
 
@@ -1092,7 +1092,7 @@ INLINE bool update_accumulator(const Position* pos)
 
 				const auto column = reinterpret_cast<vec16_t*>(&ft_weights[offset]);
 				for (unsigned j = 0; j < num_regs; j++)
-					acc[j] = VEC_ADD_16(acc[j], column[j]);
+					acc[j] = vec_add_16(acc[j], column[j]);
 			}
 
 			for (unsigned j = 0; j < num_regs; j++)
@@ -1150,7 +1150,7 @@ INLINE void transform(const Position* pos, clipped_t* output, mask_t* out_mask)
 	{
 		pos->player, !pos->player
 	};
-	
+
 	for (unsigned p = 0; p < 2; p++)
 	{
 		const unsigned offset = k_half_dimensions * p;
@@ -1162,8 +1162,8 @@ INLINE void transform(const Position* pos, clipped_t* output, mask_t* out_mask)
 		{
 			const vec16_t s0 = reinterpret_cast<vec16_t*>((*accumulation)[perspectives[p]])[i * 2];
 			const vec16_t s1 = reinterpret_cast<vec16_t*>((*accumulation)[perspectives[p]])[i * 2 + 1];
-			out[i] = VEC_PACKS(s0, s1);
-			*out_mask++ = VEC_MASK_POS(out[i]);
+			out[i] = vec_packs(s0, s1);
+			*out_mask++ = vec_mask_pos(out[i]);
 		}
 #else
 		for (unsigned i = 0; i < k_half_dimensions; i++)
@@ -1192,13 +1192,13 @@ int nnue_evaluate_pos(const Position* pos)
 	int32_t out_value;
 	alignas(8) mask_t input_mask[ft_out_dims / (8 * sizeof(mask_t))];
 	alignas(8) mask_t hidden1_mask[8 / sizeof(mask_t)] = { 0 };
-	
+
 #ifdef ALIGNMENT_HACK // work around a bug in old gcc on Windows
 	uint8_t buf[sizeof(struct NetData) + 63];
 	struct NetData* b = (struct NetData*)(buf + ((((uintptr_t)buf - 1) ^ 0x3f) & 0x3f));
 #define B(x) (b->x)
 #else
-	struct net_data buf{};
+	net_data buf{};
 #define B(x) (buf.x)
 #endif
 
@@ -1338,7 +1338,7 @@ static void init_weights(const void* eval_data)
 	// Read transformer
 	for (unsigned i = 0; i < k_half_dimensions; i++, d += 2)
 		ft_biases[i] = static_cast<int16_t>(readu_le_u16(d));
-	
+
 	for (unsigned i = 0; i < k_half_dimensions * ft_in_dims; i++, d += 2)
 		ft_weights[i] = static_cast<int16_t>(readu_le_u16(d));
 
@@ -1346,15 +1346,15 @@ static void init_weights(const void* eval_data)
 	d += 4;
 	for (unsigned i = 0; i < 32; i++, d += 4)
 		hidden1_biases[i] = static_cast<int32_t>(readu_le_u32(d));
-	
+
 	d = read_hidden_weights(hidden1_weights, 512, d);
 	for (unsigned i = 0; i < 32; i++, d += 4)
 		hidden2_biases[i] = static_cast<int32_t>(readu_le_u32(d));
-	
+
 	d = read_hidden_weights(hidden2_weights, 32, d);
 	for (unsigned i = 0; i < 1; i++, d += 4)
 		output_biases[i] = static_cast<int32_t>(readu_le_u32(d));
-	
+
 	read_output_weights(output_weights, d);
 
 #ifdef USE_AVX2
@@ -1373,7 +1373,7 @@ static bool load_eval_file(const char* eval_file)
 		const FD fd = open_file(eval_file);
 		if (fd == FD_ERR)
 			return false;
-		
+
 		eval_data = map_file(fd, &mapping);
 		size = file_size(fd);
 		close_file(fd);
@@ -1382,10 +1382,10 @@ static bool load_eval_file(const char* eval_file)
 	const bool success = verify_net(eval_data, size);
 	if (success)
 		init_weights(eval_data);
-	
+
 	if (mapping)
 		unmap_file(eval_data, mapping);
-	
+
 	return success;
 }
 

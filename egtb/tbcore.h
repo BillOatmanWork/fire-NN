@@ -109,7 +109,7 @@ struct tb_entry_piece
 	ubyte symmetric;
 	ubyte has_pawns;
 	ubyte enc_type;
-	struct pairs_data* precomp[2];
+	pairs_data* precomp[2];
 	int factor[2][tb_pieces];
 	ubyte pieces[2][tb_pieces];
 	ubyte norm[2][tb_pieces];
@@ -127,7 +127,7 @@ struct tb_entry_pawn
 	ubyte pawns[2];
 	struct
 	{
-		struct pairs_data* precomp[2];
+		pairs_data* precomp[2];
 		int factor[2][tb_pieces];
 		ubyte pieces[2][tb_pieces];
 		ubyte norm[2][tb_pieces];
@@ -144,7 +144,7 @@ struct dtz_entry_piece
 	ubyte symmetric;
 	ubyte has_pawns;
 	ubyte enc_type;
-	struct pairs_data* precomp;
+	pairs_data* precomp;
 	int factor[tb_pieces];
 	ubyte pieces[tb_pieces];
 	ubyte norm[tb_pieces];
@@ -165,7 +165,7 @@ struct dtz_entry_pawn
 	ubyte pawns[2];
 	struct
 	{
-		struct pairs_data* precomp;
+		pairs_data* precomp;
 		int factor[tb_pieces];
 		ubyte pieces[tb_pieces];
 		ubyte norm[tb_pieces];
@@ -179,14 +179,14 @@ struct dtz_entry_pawn
 struct tb_hash_entry
 {
 	uint64 key;
-	struct tb_entry* ptr;
+	tb_entry* ptr;
 };
 
 struct dtz_table_entry
 {
 	uint64 key1;
 	uint64 key2;
-	struct tb_entry* entry;
+	tb_entry* entry;
 };
 
 

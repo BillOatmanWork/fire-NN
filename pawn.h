@@ -15,6 +15,7 @@
 */
 
 #pragma once
+#include "define.h"
 #include "fire.h"
 #include "position.h"
 #include "macro/square.h"
@@ -83,7 +84,7 @@ namespace pawn
 		char padding[20];
 	};
 
-	static_assert(offsetof(struct pawn_hash_entry, half_open_lines) == 72, "offset wrong");
+	static_assert(offsetof(pawn_hash_entry, half_open_lines) == 72, "offset wrong");
 	static_assert(sizeof(pawn_hash_entry) == 128, "Pawn Hash Entry size incorrect");
 
 	template <class entry, int size>
@@ -104,7 +105,7 @@ namespace pawn
 	typedef pawn_hash_table<pawn_hash_entry, pawn_hash_size> pawn_hash;
 }
 
-	inline square square_in_front(const side color, const square sq)
+inline square square_in_front(const side color, const square sq)
 {
 	return color == white ? sq + north : sq + south;
 }

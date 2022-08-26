@@ -20,7 +20,7 @@ else
 	EXE = fire
 endif
 
-PGOBENCH = ./$(EXE) bench 16
+PGOBENCH = ./$(EXE) bench
 
 OBJS =
 	OBJS += bitbase/kpk.o bitboard.o chrono.o egtb/egtb.o egtb/tbprobe.o endgame.o evaluate.o \
@@ -30,20 +30,21 @@ OBJS =
 	
 optimize = yes
 debug = no
+sanitize = none
 bits = 64
 prefetch = no
 popcnt = no
 sse = no
+mmx = no
 sse2 = no
 ssse3 = no
 sse41 = no
-pext = no
 avx2 = no
+bmi2 = no
 
-ifeq ($(ARCH),x86-64-popc)
+ifeq ($(ARCH),x86-64-sse41)
 	arch = x86_64
 	bits = 64
-	prefetch = yes
 	popcnt = yes
 	sse = yes
 	sse2 = yes
@@ -54,7 +55,6 @@ endif
 ifeq ($(ARCH),x86-64-avx2)
 	arch = x86_64
 	bits = 64
-	prefetch = yes
 	popcnt = yes
 	sse = yes
 	sse2 = yes
@@ -66,14 +66,17 @@ endif
 ifeq ($(ARCH),x86-64-bmi2)
 	arch = x86_64
 	bits = 64
-	prefetch = yes
 	popcnt = yes
 	sse = yes
 	sse2 = yes
 	ssse3 = yes
 	sse41 = yes
 	avx2 = yes
-	pext = yes
+	bmi2 = yes
+endif
+
+ifeq ($(sse),yes)
+	prefetch = yes
 endif
 
 CXXFLAGS += -Wcast-qual -fno-exceptions $(EXTRACXXFLAGS)
@@ -168,6 +171,26 @@ ifeq ($(popcnt),yes)
 	endif
 endif
 
+ifeq ($(sse2),yes)
+	CXXFLAGS += -DUSE_SSE2
+	ifeq ($(comp),$(filter $(comp),gcc clang mingw))
+		CXXFLAGS += -msse2
+	endif
+endif
+
+ifeq ($(ssse3),yes)
+	CXXFLAGS += -DUSE_SSSE3
+	ifeq ($(comp),$(filter $(comp),gcc clang mingw))
+		CXXFLAGS += -mssse3
+	endif
+endif
+
+ifeq ($(sse41),yes)
+	CXXFLAGS += -DUSE_SSE41
+	ifeq ($(comp),$(filter $(comp),gcc clang mingw))
+		CXXFLAGS += -msse4.1
+	endif
+endif
 
 ifeq ($(avx2),yes)
 	CXXFLAGS += -DUSE_AVX2
@@ -175,7 +198,8 @@ ifeq ($(avx2),yes)
 		CXXFLAGS += -mavx2
 	endif
 endif
-ifeq ($(pext),yes)
+
+ifeq ($(bmi2),yes)
 	CXXFLAGS += -DUSE_PEXT
 	ifeq ($(comp),$(filter $(comp),gcc clang mingw))
 		CXXFLAGS += -mbmi -mbmi2
@@ -217,19 +241,21 @@ help:
 	@echo "clean                   > Clean up"
 	@echo ""
 	@echo "Supported architectures:"
-	@echo "x86-64-popc             > x86 64-bit with popcnt support"
-	@echo "x86-64-avx2             > x86 64-bit with avx2 support"
+	@echo "x86-64-sse41            > x86 64-bit with sse41 support"
+	@echo "x86-64-avx2             > x86 64-bit with avx2 support"	
 	@echo "x86-64-bmi2             > x86 64-bit with bmi2 support"
 	@echo ""
 	@echo "Supported compilers:"
 	@echo "gcc                     > Gnu compiler (default)"
 	@echo "mingw                   > Gnu compiler with MinGW under Windows"
 	@echo ""	
-	@echo "make build ARCH=x86-64-popc
-	@echo "make build ARCH=x86-64-pext	
+	@echo "make build ARCH=x86-64-sse41"
+	@echo "make build ARCH=x86-64-avx2"	
+	@echo "make build ARCH=x86-64-bmi2"
 	@echo ""
-	@echo "make profile-build ARCH=x86-64-popc"	
-	@echo "make profile-build ARCH=x86-64-pext"
+	@echo "make profile-build ARCH=x86-64-sse41"	
+	@echo "make profile-build ARCH=x86-64-avx2"
+	@echo "make profile-build ARCH=x86-64-bmi2"	
 	@echo ""
 
 .PHONY: build profile-build
@@ -282,11 +308,11 @@ config-sanity:
 	@echo "prefetch: '$(prefetch)'"
 	@echo "popcnt: '$(popcnt)'"
 	@echo "sse: '$(sse)'"
-	@echo "sse2: '$(sse2)'"
+	@echo "sse2: '$(sse2)'"	
 	@echo "ssse3: '$(ssse3)'"
 	@echo "sse41: '$(sse41)'"
 	@echo "avx2: '$(avx2)'"
-	@echo "pext: '$(pext)'"	
+	@echo "bmi2: '$(bmi2)'"
 	@echo ""
 	@echo "Compiler:"
 	@echo "CXX: $(CXX)"
@@ -304,11 +330,12 @@ config-sanity:
 	@test "$(prefetch)" = "yes" || test "$(prefetch)" = "no"
 	@test "$(popcnt)" = "yes" || test "$(popcnt)" = "no"
 	@test "$(sse)" = "yes" || test "$(sse)" = "no"
+	@test "$(mmx)" = "yes" || test "$(mmx)" = "no"
 	@test "$(sse2)" = "yes" || test "$(sse2)" = "no"
 	@test "$(ssse3)" = "yes" || test "$(ssse3)" = "no"
 	@test "$(sse41)" = "yes" || test "$(sse41)" = "no"
 	@test "$(avx2)" = "yes" || test "$(avx2)" = "no"
-	@test "$(pext)" = "yes" || test "$(pext)" = "no"
+	@test "$(bmi2)" = "yes" || test "$(bmi2)" = "no"
 	@test "$(comp)" = "gcc" || test "$(comp)" = "mingw"
 
 $(EXE): $(OBJS) $(COBJS)
@@ -333,10 +360,10 @@ gcc-profile-use:
 	all
 
 gcc-profile-clean:
+	@rm -rf *.txt
+	@rm -rf *.map
 	@rm -rf *.gcda
 	@rm -rf *.o
-	@rm -rf *.map
-	@rm -rf *txt			
 	@rm -rf bitbase/*.gcda
 	@rm -rf bitbase/*.o	
 	@rm -rf egtb/*.gcda

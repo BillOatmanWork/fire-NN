@@ -102,9 +102,9 @@ private:
 	mc_node nodes_buffer_[max_ply + 7]{};
 	mc_node* nodes_ = nodes_buffer_ + 4;
 	edge* edges_buffer_[max_ply + 7]{};
-	edge* *edges_ = edges_buffer_ + 4;
+	edge** edges_ = edges_buffer_ + 4;
 	search::stack_mc stack_buffer_[max_ply + 7]{};
-	search::stack_mc * stack_ = stack_buffer_ + 4;
+	search::stack_mc* stack_ = stack_buffer_ + 4;
 };
 
 inline void monte_carlo::default_parameters()
@@ -135,6 +135,11 @@ struct edge
 	reward mean_action_value;
 };
 
+inline bool comp_float(const double a, const double b, const double epsilon = 0.005)
+{
+	return fabs(a - b) < epsilon;
+}
+
 static struct
 {
 	bool operator()(const edge a, const edge b) const
@@ -147,7 +152,7 @@ static struct
 {
 	bool operator()(const edge a, const edge b) const
 	{
-		return a.visits > b.visits || a.visits == b.visits && a.prior > b.prior;
+		return a.visits > b.visits || (comp_float(a.visits, b.visits, 0.005) && a.prior > b.prior);
 	}
 } compare_visits;
 
@@ -173,7 +178,7 @@ struct node_info
 	{
 		return prev_move;
 	}
-	
+
 	edge* children_list()
 	{
 		return &children[0];

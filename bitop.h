@@ -5,7 +5,7 @@
   which have been documented in detail at https://www.chessprogramming.org/
   and demonstrated via the very strong open-source chess engine Stockfish...
   https://github.com/official-stockfish/Stockfish.
-  
+
   Fire is free software: you can redistribute it and/or modify it under the
   terms of the GNU General Public License as published by the Free Software
   Foundation, either version 3 of the License, or any later version.
@@ -15,8 +15,6 @@
 */
 
 #pragma once
-
-#include "define.h"
 
 // the C/C++ AVX intrinsic functions for x86 processors are in the header "immintrin.h".
 // the corresponding Intel® AVX2 instruction is PEXT (Parallel Bits Extract)

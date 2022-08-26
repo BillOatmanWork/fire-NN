@@ -27,31 +27,31 @@
 #include <cinttypes>
 
 #ifdef _WIN32
-	#include <Windows.h>
+#include <Windows.h>
 #else
-	#include <unistd.h>
-	#include <sys/mman.h>
+#include <unistd.h>
+#include <sys/mman.h>
 #endif
 
 /*
 Force inline
 */
 #if defined (__GNUC__)
-	#define INLINE  __inline __attribute__((always_inline))
+#define INLINE  __inline __attribute__((always_inline))
 #elif defined (_WIN32)
-	#define INLINE __inline
+#define INLINE __inline
 #else
-	#define INLINE  __inline
+#define INLINE  __inline
 #endif
 
 /*
 Intrinsic bsf
 */
 #if defined(__GNUC__)
-	#define bsf(b) __builtin_ctzll(b)
-	#define bsr(b) (63 - __builtin_clzll(b))
+#define bsf(b) __builtin_ctzll(b)
+#define bsr(b) (63 - __builtin_clzll(b))
 #elif defined(_WIN32)
-	#include <intrin.h>
+#include <intrin.h>
 
 INLINE int bsf(const uint64_t b)
 {
@@ -68,13 +68,13 @@ INLINE int bsr(const uint64_t b)
 #   endif
 
 #ifdef _WIN32
-	typedef HANDLE FD;
-	#define FD_ERR INVALID_HANDLE_VALUE
-	typedef HANDLE map_t;
+typedef HANDLE FD;
+#define FD_ERR INVALID_HANDLE_VALUE
+typedef HANDLE map_t;
 #else /* Unix */
-	typedef int FD;
-	#define FD_ERR -1
-	typedef size_t map_t;
+typedef int FD;
+#define FD_ERR -1
+typedef size_t map_t;
 #endif
 
 FD open_file(const char* name);
@@ -92,7 +92,7 @@ INLINE uint32_t readu_le_u32(const void* p)
 INLINE uint16_t readu_le_u16(const void* p)
 {
 	const auto* q = static_cast<const uint8_t*>(p);
-	return q[0] | (q[1] << 8);
+	return static_cast<uint16_t>(q[0] | (q[1] << 8));
 }
 
 template<typename T1, typename T2, typename T3>

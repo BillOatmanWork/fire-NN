@@ -431,7 +431,7 @@ bool legal_move_list_contains_castle(const position& pos, const uint32_t move)
 	if (pos.is_in_check())
 		return false;
 
-	auto* const end = generate_moves<castle_moves>(pos, moves);
+	const auto* const end = generate_moves<castle_moves>(pos, moves);
 
 	auto* p_move = moves;
 	while (p_move != end)
@@ -447,7 +447,7 @@ bool legal_move_list_contains_castle(const position& pos, const uint32_t move)
 bool legal_moves_list_contains_move(const position& pos, const uint32_t move)
 {
 	s_move moves[max_moves];
-	auto* const end = pos.is_in_check()
+	const auto* const end = pos.is_in_check()
 		? generate_moves<evade_check>(pos, moves)
 		: generate_moves<all_moves>(pos, moves);
 
@@ -465,7 +465,7 @@ bool legal_moves_list_contains_move(const position& pos, const uint32_t move)
 bool at_least_one_legal_move(const position& pos)
 {
 	s_move moves[max_moves];
-	auto* const end = pos.is_in_check()
+	const auto* const end = pos.is_in_check()
 		? generate_moves<evade_check>(pos, moves)
 		: generate_moves<all_moves>(pos, moves);
 

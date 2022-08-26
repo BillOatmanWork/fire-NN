@@ -47,7 +47,7 @@ uint64_t start_perft(position& pos, const int depth) {
 
 void perft(int depth, std::string& fen)
 {
-	char buf[256];
+	char buf[32];
 
 	uint64_t nodes = 0;
 
@@ -60,7 +60,7 @@ void perft(int depth, std::string& fen)
 
 	// if 'perft.epd' is specified as 4th function parameter
 	// read positions from that file
-	if (static char file_name[256]; fen == "perft.epd")
+	if (static char file_name[64]; fen == "perft.epd")
 	{
 		std::fstream file;
 		file.open("perft.epd", std::ios::in);
@@ -79,7 +79,7 @@ void perft(int depth, std::string& fen)
 			perft_log.open(file_name);
 
 			// write system info to log file
-			perft_log << program << " " << version << " " << platform << " " << bmis << std::endl;
+			perft_log << version << std::endl;
 
 			std::string fen_pos;
 
@@ -170,7 +170,7 @@ void perft(int depth, std::string& fen)
 		perft_log.open(file_name);
 
 		// write formatted results to time stamped log file
-		perft_log << program << " " << version << " " << platform << " " << bmis << std::endl;
+		perft_log << version << std::endl;
 		perft_log << "perft " << depth << std::endl;
 		perft_log << fen.c_str() << std::endl;
 		perft_log << "nodes " << std::fixed << std::setprecision(0) << nodes << std::endl;
@@ -184,7 +184,7 @@ void perft(int depth, std::string& fen)
 // divide is similar to perft but lists all moves possible and calculates the perft of the decremented depth for each
 void divide(int depth, std::string& fen)
 {
-	char buf[256];
+	char buf[32];
 	uint64_t nodes = 0;
 
 	if (depth < 1) depth = 1;
@@ -250,7 +250,7 @@ void divide(int depth, std::string& fen)
 				acout() << std::endl;
 
 				// write formatted results to time stamped log file
-				divide_log << program << " " << version << " " << platform << " " << bmis << std::endl;
+				divide_log << version << std::endl;
 				divide_log << "divide " << depth << std::endl;
 				divide_log << fen.c_str() << std::endl;
 				divide_log << "nodes " << std::fixed << std::setprecision(0) << nodes << std::endl;
@@ -312,7 +312,7 @@ void divide(int depth, std::string& fen)
 		divide_log.open(file_name);
 
 		// write formatted results to time stamped log file
-		divide_log << program << " " << version << " " << platform << " " << bmis << std::endl;
+		divide_log << version << std::endl;
 		divide_log << "divide " << depth << std::endl;
 		divide_log << fen.c_str() << std::endl;
 		divide_log << "nodes " << std::fixed << std::setprecision(0) << nodes << std::endl;
