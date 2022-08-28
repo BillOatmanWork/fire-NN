@@ -1,6 +1,6 @@
 # Fire NN
 
-![alt tag](https://raw.githubusercontent.com/FireFather/fire/master/docs/fire.png)
+![alt tag](https://raw.githubusercontent.com/FireFather/fire-NN/master/docs/fire.png)
 
 A strong UCI chess engine including a unique NNUE evaluation created from SF & LC0 shared data
 
