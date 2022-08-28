@@ -45,12 +45,6 @@ Fire-NN has undergone meticulous analysis and refactoring using many of the most
 
 - **windows** : fire-NN_x64_x64_bmi2.exe, fire-NN_x64_avx2.exe, fire-NN_x64_sse41.exe
 
-
-compile it yourself
-- windows (visual studio) use included project files Fire.vcxproj or Fire.sln
-- minGW run included bash scripts make_sse41.sh, make_bmi2.sh, make_avx2.sh, or make_all.sh
-- ubuntu type 'make profile-build ARCH=x86-64-bmi2', 'make profile-build ARCH=x86-64-avx2', etc.
-
 Be aware that, due to lack of avx2 instruction set, the sse41 binaries are much much slower than the bmi2 and/or avx2 binaries.
 
 Here is a complete list of recommended processors for Fire-NN:
