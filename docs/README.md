@@ -2,7 +2,7 @@
 
 ![alt tag](https://raw.githubusercontent.com/FireFather/fire-NN/master/docs/fire.png)
 
-A strong UCI chess engine including a unique NNUE (halfkp_256x2-32-32) evaluation created from SF & LC0 shared data
+A strong UCI chess engine including a unique NNUE evaluation created from SF & LC0 shared data
 
 - fire without NNUE can be found here: https://github.com/FireFather/fire
 - fire w/ NNUE from self-play can be found here: https://github.com/FireFather/fire-zero
@@ -26,7 +26,7 @@ A strong UCI chess engine including a unique NNUE (halfkp_256x2-32-32) evaluatio
 - asychronous cout (acout) class using std::unique_lock<std::mutex>
 - uci option searchtype random w/ uniform_real_distribution & mesenne_twister_engine
 - reads engine.conf on startup for search, eval, pawn, and material parameters
-- uses a NNUE evaluation
+- uses a unique NNUE (halfkp_256x2-32-32) evaluation
 - fast alpha-beta search
 - or optional experimental MCTS-UCT search
  (Monte Carlo Tree Search w/ Upper Confidence Bounds Applied to Trees) pure/no minmax
