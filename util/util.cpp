@@ -76,7 +76,7 @@ namespace util
 		ci << "info string " << sys_info.dwNumberOfProcessors << " available cores" << std::endl;
 #else
 		// if linux
-		ss << "info string " << sysconf(_SC_NPROCESSORS_ONLN) << " available cores" << std::endl;
+		ci << "info string " << sysconf(_SC_NPROCESSORS_ONLN) << " available cores" << std::endl;
 #endif
 
 		return ci.str();
