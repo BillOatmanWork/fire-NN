@@ -57,7 +57,9 @@ A strong UCI chess engine including a unique NNUE evaluation created from SF & L
 |    minic-3.24                         |   380| (  201,  122,   57)|  68.9 |   +140|,  14|,  100.0|
 |    xiphos-0.6                         |   379| (  234,   91,   54)|  73.7 |   +182|,  14|,  100.0|
 |    marvin-6.0.0                       |   379| (  242,   85,   52)|  75.1 |   +194|,  15|,  100.0|
-    
+  
+## monte-carlo search mode:  
+
 ![alt tag](https://raw.githubusercontent.com/FireFather/fire-NN/master/docs/Fire_8.NN.MCx64.png)
 
 Fire-NN has undergone months of meticulous analysis and refactoring using many of the most modern C++ tools available today, including Clang, ReSharper C++, and Visual Studio Code Analysis, ensuring the production of extremely fast highly optimized and stable executables.
