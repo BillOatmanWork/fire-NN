@@ -33,7 +33,7 @@ A strong UCI chess engine including a unique NNUE evaluation created from SF & L
 
 **fire-NN-08272022-004408 is now available**
 
-| stregnth estimate      |           |           |           |           |           |           |
+| strength estimate      |           |           |           |           |           |           |
 | ---------------------- | --------- | --------- | --------- | --------- | --------- | --------- |
 |                                       | games| (    +,    =,    -)|   (%) |   Diff|,  SD|,CFS (%)|
 |    fire-NN-08272022-004408 (3438 Elo) |  7218| (+2315,=2395,-2508)| 48.7 %|
