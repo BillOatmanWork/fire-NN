@@ -2,7 +2,7 @@
 
 ![alt tag](https://raw.githubusercontent.com/FireFather/fire-NN/master/docs/fire.png)
 
-A strong UCI chess engine including a unique NNUE evaluation created from SF & LC0 shared data
+A strong UCI chess engine including a unique NNUE (halfkp_256x2-32-32) evaluation created from SF & LC0 shared data
 
 - fire without NNUE can be found here: https://github.com/FireFather/fire
 - fire w/ NNUE from self-play can be found here: https://github.com/FireFather/fire-zero
