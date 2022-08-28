@@ -31,24 +31,29 @@ A strong UCI chess engine including a unique NNUE evaluation created from SF & L
 - or optional experimental MCTS-UCT search
  (Monte Carlo Tree Search w/ Upper Confidence Bounds Applied to Trees) pure/no minmax
 
-**Fire 8.NN.MC.3 (NNUE - MCTS/UCT) is now available**
+**fire-NN-08272022-004408 is now available**
 
 ![alt tag](https://raw.githubusercontent.com/FireFather/fire-NN/master/docs/Fire_8.NN.MCx64.png)
 
-Fire 8.NN.MC has undergone meticulous analysis and refactoring using many of the most modern C++ tools available today, including Clang, ReSharper C++, and Visual Studio Code Analysis, ensuring the production of extremely fast highly optimized and stable executables.
+Fire-NN has undergone meticulous analysis and refactoring using many of the most modern C++ tools available today, including Clang, ReSharper C++, and Visual Studio Code Analysis, ensuring the production of extremely fast highly optimized and stable executables.
 
 
 ## available binaries
 - **x64 avx2** = fast pgo binary (for modern 64-bit systems w/ AVX2 instruction set)
 - **x64 bmi2** = fast pgo binary (for modern 64-bit systems w/ BMI2 instruction set)
-- **x64 popc** = fast pgo binary (for modern 64-bit systems w/ popcount instruction set)
+- **x64 sse41** = fast pgo binary (for modern 64-bit systems w/ sse41/popcount instruction set)
 
-- **windows** : Fire_8.NN.MC.3_x64_bmi2.exe, Fire_8.NN.MC.3_x64_avx2.exe, Fire_8.NN.MC.3_x64_popc.exe
-- **linux** :   Fire_8.NN.MC.3_x64_bmi2, Fire_8.NN.MC.3_x64_avx2, Fire_8.NN.MC.3_x64_popc
+- **windows** : fire-NN_x64_x64_bmi2.exe, fire-NN_x64_avx2.exe, fire-NN_x64_sse41.exe
 
-Be aware that, due to lack of avx2 instruction set, the popc binaries are much much slower than the bmi2 and/or avx2 binaries.
 
-Here is a complete list of recommended processors for Fire 8.NN.MC x64:
+compile it yourself
+- windows (visual studio) use included project files Fire.vcxproj or Fire.sln
+- minGW run included bash scripts make_sse41.sh, make_bmi2.sh, make_avx2.sh, or make_all.sh
+- ubuntu type 'make profile-build ARCH=x86-64-bmi2', 'make profile-build ARCH=x86-64-avx2', etc.
+
+Be aware that, due to lack of avx2 instruction set, the sse41 binaries are much much slower than the bmi2 and/or avx2 binaries.
+
+Here is a complete list of recommended processors for Fire-NN:
 
 **AVX2 (Advanced Vector Extensions 2)** (also known as Haswell New Instructions)
 
