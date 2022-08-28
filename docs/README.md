@@ -4,8 +4,8 @@
 
 A strong UCI chess engine including a unique NNUE evaluation created from SF & LC0 shared data
 
-- Fire without NNUE can be found here: https://github.com/FireFather/fire
-- Fire w/ NNUE from self-play can be found here: https://github.com/FireFather/fire-zero
+- fire without NNUE can be found here: https://github.com/FireFather/fire
+- fire w/ NNUE from self-play can be found here: https://github.com/FireFather/fire-zero
 
 ## features
 - c++17
@@ -35,80 +35,24 @@ A strong UCI chess engine including a unique NNUE evaluation created from SF & L
 
 ![alt tag](https://raw.githubusercontent.com/FireFather/fire-NN/master/docs/Fire_8.NN.MCx64.png)
 
-Fire-NN has undergone meticulous analysis and refactoring using many of the most modern C++ tools available today, including Clang, ReSharper C++, and Visual Studio Code Analysis, ensuring the production of extremely fast highly optimized and stable executables.
+Fire-NN has undergone months of meticulous analysis and refactoring using many of the most modern C++ tools available today, including Clang, ReSharper C++, and Visual Studio Code Analysis, ensuring the production of extremely fast highly optimized and stable executables.
 
 
-## available binaries
-- **x64 avx2** = fast pgo binary (for modern 64-bit systems w/ AVX2 instruction set)
-- **x64 bmi2** = fast pgo binary (for modern 64-bit systems w/ BMI2 instruction set)
-- **x64 sse41** = fast pgo binary (for modern 64-bit systems w/ sse41/popcount instruction set)
+## available Windows binaries
+- **x64 bmi2** = fast pgo binary (for modern 64-bit systems w/ BMI2 instruction set) if you own a Intel Haswell or newer cpu, this compile should be faster.
+- **x64 avx2** = fast pgo binary (for modern 64-bit systems w/ AVX2 instruction set) if you own a modern AMD cpu, this compile should be the fastest.
 
-- **windows** : fire-NN_x64_x64_bmi2.exe, fire-NN_x64_avx2.exe, fire-NN_x64_sse41.exe
+- **windows** : fire-NN_x64_x64_bmi2.exe or fire-NN_x64_avx2.exe
 
-Be aware that, due to lack of avx2 instruction set, the sse41 binaries are much much slower than the bmi2 and/or avx2 binaries.
 
-Here is a complete list of recommended processors for Fire-NN:
-
-**AVX2 (Advanced Vector Extensions 2)** (also known as Haswell New Instructions)
-
-Intel
-- Haswell processor (only Core and Xeon branded), Q2 2013
-- Haswell E processor, Q3 2014
-- Broadwell processor, Q4 2014
-- Broadwell E processor, Q3 2016
-- Skylake processor (only Core and Xeon branded), Q3 2015
-- Kaby Lake processor (only Core and Xeon branded), Q3 2016 (ULV mobile)/Q1 2017 (desktop/mobile)
-- Skylake-X processor, Q2 2017
-- Coffee Lake processor (only Core and Xeon branded), Q4 2017
-- Cannon Lake processor, Q2 2018
-- Cascade Lake processor, Q2 2019
-- Ice Lake processor, Q3 2019
-- Comet Lake processor (only Core and Xeon branded), Q3 2019
-- Tiger Lake (Core, Pentium and Celeron branded[11]) processor, Q3 2020
-- Rocket Lake processor, 2021
-- Alder Lake processor, 2021
-- Gracemont processors, 2021
-
-AMD
-- Excavator processor and newer, Q2 2015
-- Zen processor, Q1 2017
-- Zen+ processor, Q2 2018
-- Zen 2 processor, Q3 2019
-- Zen 3 processor, 2020
-VIA:
-- Nano QuadCore
-- Eden X4
-
-**BMI2 (Bit Manipulation Instruction Set 2)**
-
-Intel
-- Intel Nehalem processors and newer (like Sandy Bridge, Ivy Bridge) (POPCNT supported)
-- Intel Silvermont processors (POPCNT supported)
-- Intel Haswell processors and newer (like Skylake, Broadwell) (ABM, BMI1 and BMI2 supported)[6]
-
-AMD
-K10-based processors (ABM supported)
-- "Cat" low-power processors
-- Bobcat-based processors (ABM supported)[14]
-- Jaguar-based processors and newer (ABM and BMI1 supported)[4]
-- Puma-based processors and newer (ABM and BMI1 supported)[4]
-"Heavy Equipment" processors
-- Bulldozer-based processors (ABM supported)
-- Piledriver-based processors (ABM, BMI1 and TBM supported)[1]
-- Steamroller-based processors (ABM, BMI1 and TBM supported)
-- Excavator-based processors and newer (ABM, BMI1, BMI2 and TBM supported; microcoded PEXT and PDEP)[9]
-- Zen-based, Zen+-based, and processors (ABM, BMI1 and BMI2 supported; microcoded PEXT and PDEP)
-- Zen 3 processors and newer (ABM, BMI1 and BMI2 supported; full hardware implementation)
-
-Run 'bench' at command line to determine which binary runs best/fastest on your system. for greater accuracy, run it twice and calculate the average of both results.
-
+run 'bench' at command line to determine which binary runs best/fastest on your system. for greater accuracy, run it twice and calculate the average of both results.
 
 please see **http://chesslogik.wix.com/fire** for more info
 
 ## compile it yourself
 - **windows** (visual studio) use included project files: Fire.vcxproj or Fire.sln
-- **minGW** run one of the included bash shell scripts: make_bmi2.sh, make_axv2.sh or make_sse41.sh
-- **ubuntu** type 'make profile-build ARCH=x86-64-bmi2' or 'make profile-build ARCH=x86-64-avx2' or 'make profile-build ARCH=x86-64-sse41'
+- **minGW** run one of the included bash shell scripts: make_bmi2.sh, make_avx2.sh, or make_all.sh 
+- **ubuntu** type 'make profile-build ARCH=x86-64-bmi2', 'make profile-build ARCH=x86-64-avx2', etc.
 
 ## uci options
 - **Hash** size of the hash table. default is 64 MB.
@@ -140,7 +84,6 @@ and others
 - [Robbolito](https://github.com/FireFather/robbolito)
 - [Firebird](https://github.com/FireFather/firebird)
 - [Ivanhoe](https://www.chessprogramming.org/IvanHoe)
-- [Ivanhoe](http://users.telenet.be/chesslogik/ivanhoe.htm)
 - [Houdini](https://www.cruxis.com/chess/houdini.htm)
 - [Gull](https://github.com/FireFather/seagull)
 
@@ -156,11 +99,12 @@ the MCTS implementation is derived from Stephane Nicolet's work
 if you are interested in learning about my particular testing methodology, I've explained it in some detail here:
 http://www.chessdom.com/fire-the-chess-engine-releases-a-new-version/
 
-
 ## license
 Fire is distributed under the GNU General Public License. Please read LICENSE for more information.
 
-## Does Fire NN play like Stockfish? 
+please see **http://chesslogik.wix.com/fire** for more info
+
+## Does Fire-NN play like Stockfish? 
 No. Here are the results of Don Daily's SIM program (default values) today to measure Fire 8.NN move selection vs the last 4 versions of Stockfish:
 
 ![alt tag](https://raw.githubusercontent.com/FireFather/fire-NN/master/docs/matrix.png)
@@ -175,7 +119,5 @@ https://komodochess.com/downloads.htm
 
 
 best regards-
-
-Norm
 
 firefather@telenet.be
