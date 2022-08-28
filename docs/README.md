@@ -33,6 +33,30 @@ A strong UCI chess engine including a unique NNUE evaluation created from SF & L
 
 **fire-NN-08272022-004408 is now available**
 
+|                        |           |           |           |           |           |           |
+| ---------------------- | --------- | --------- | --------- | --------- | --------- | --------- |
+| 9) fire-NN-08272022-004408       3438 |   7218| (+2315,=2395,-2508)|  48.7 %|
+|    vs.                                |  games| (    +,    =,    -)|   (%) |   Diff|,  SD|, CFS (%)|
+|    stockfish-15                       |    380| (    7,   58,  315)|   9.5 |   -397|,  22|,    0.0|
+|    komodo-dragon-3.1                  |    380| (    3,   66,  311)|   9.5 |   -397|,  21|,    0.0|
+|    berserk-9                          |    380| (   20,   83,  277)|  16.2 |   -289|,  17|,    0.0|
+|    koivisto_8.0                       |    380| (   24,  113,  243)|  21.2 |   -231|,  17|,    0.0|
+|    rubiChess-20220813                 |    380| (   50,  149,  181)|  32.8 |   -126|,  15|,    0.0|
+|    seer-v2.5                          |    380| (   84,  137,  159)|  40.1 |    -70|,  12|,    0.0|
+|    rofChade-3.0                       |    380| (   78,  172,  130)|  43.2 |    -48|,  13|,    0.0|
+|    rebel-15.1                         |    380| (   96,  177,  107)|  48.6 |    -10|,  14|,   23.0|
+|    slow64-2.9                         |    380| (  110,  163,  107)|  50.4 |     +3|,  12|,   59.2|
+|    fire-8242022                       |    380| (  128,  144,  108)|  52.6 |    +19|,  12|,   93.4|
+|    nemorino-6.00                      |    380| (  149,  155,   76)|  59.6 |    +68|,  12|,  100.0|
+|    wasp-6.00                          |    380| (  155,  144,   81)|  59.7 |    +69|,  14|,  100.0|
+|    ethereal-12.75                     |    380| (  172,  124,   84)|  61.6 |    +83|,  13|,  100.0|
+|    igel-3.1.0                         |    380| (  172,  149,   59)|  64.9 |   +108|,  13|,  100.0|
+|    tucano-10.00                       |    380| (  196,  129,   55)|  68.6 |   +137|,  13|,  100.0|
+|    clover-3.1                         |    380| (  194,  134,   52)|  68.7 |   +138|,  13|,  100.0|
+|    minic-3.24                         |    380| (  201,  122,   57)|  68.9 |   +140|,  14|,  100.0|
+|    xiphos-0.6                         |    379| (  234,   91,   54)|  73.7 |   +182|,  14|,  100.0|
+|    marvin-6.0.0                       |    379| (  242,   85,   52)|  75.1 |   +194|,  15|,  100.0|
+    
 ![alt tag](https://raw.githubusercontent.com/FireFather/fire-NN/master/docs/Fire_8.NN.MCx64.png)
 
 Fire-NN has undergone months of meticulous analysis and refactoring using many of the most modern C++ tools available today, including Clang, ReSharper C++, and Visual Studio Code Analysis, ensuring the production of extremely fast highly optimized and stable executables.
