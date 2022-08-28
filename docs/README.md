@@ -107,8 +107,8 @@ please see **http://chesslogik.wix.com/fire** for more info
 
 ## compile it yourself
 - **windows** (visual studio) use included project files: Fire.vcxproj or Fire.sln
-- **minGW** run one of the included bash shell scripts: makefire_bmi2.sh, makefire_axv2.sh or makefire_popc.sh
-- **ubuntu** type 'make profile-build ARCH=x86-64-bmi2' or 'make profile-build ARCH=x86-64-avx2' or 'make profile-build ARCH=x86-64-popc'
+- **minGW** run one of the included bash shell scripts: make_bmi2.sh, make_axv2.sh or make_sse41.sh
+- **ubuntu** type 'make profile-build ARCH=x86-64-bmi2' or 'make profile-build ARCH=x86-64-avx2' or 'make profile-build ARCH=x86-64-sse41'
 
 ## uci options
 - **Hash** size of the hash table. default is 64 MB.
