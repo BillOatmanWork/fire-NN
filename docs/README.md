@@ -35,7 +35,7 @@ A strong UCI chess engine including a unique NNUE evaluation created from SF & L
 
 | strength estimate      |           |           |           |           |           |           |
 | ---------------------- | --------- | --------- | --------- | --------- | --------- | --------- |
-|                                       | games| (    +,    =,    -)|   (%) |   Diff|,  SD|,CFS (%)|
+|                                       | games| (win, draw, loss)  |   (%) |   Diff|,  SD|,CFS (%)|
 |    fire-NN-08272022-004408 (3438 Elo) |  7218| (+2315,=2395,-2508)| 48.7 %|
 |    vs.                                |      |                    |       |       |     |        |
 |    stockfish-15                       |   380| (    7,   58,  315)|   9.5 |   -397|,  22|,    0.0|
