@@ -258,12 +258,12 @@ public:
 
 	void operator<<(int bonus)
 	{
-		assert(abs(bonus) <= D);
-		static_assert(d <= std::numeric_limits<t>::max(), "D overflows T");
+		assert(abs(bonus) <= d);
+		static_assert(d <= std::numeric_limits<t>::max(), "d overflows T");
 
 		entry += bonus - entry * abs(bonus) / d;
 
-		assert(abs(entry) <= D);
+		assert(abs(entry) <= d);
 	}
 };
 
@@ -286,5 +286,4 @@ template <typename t, int d, int Size>
 struct pos_info<t, d, Size> : std::array<pi_entry<t, d>, Size> {};
 typedef pos_info<int16_t, 29952, 16, 64> piece_to_history;
 typedef pos_info<piece_to_history, 0, 16, 64> continuation_history;
-
 
